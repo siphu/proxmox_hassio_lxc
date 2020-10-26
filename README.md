@@ -9,7 +9,7 @@ Many benefits can be gained by using a LXC container compared to a VM. The resou
 To create a new LXC container on Proxmox and setup Home Assistant to run inside of it, run the following in a SSH connection or the Proxmox web shell.
 
 ```
-bash -c "$(wget -qLO - https://github.com/whiskerz007/proxmox_hassio_lxc/raw/master/create_container.sh)"
+bash -c "$(wget -qLO - https://github.com/siphu/proxmox_hassio_lxc/raw/master/create_container.sh)"
 ```
 
 After running the above command, you should modify the container's `Resources` (`Cores`, `Memory`, `Root disk`) before you continue to setup Home Assistant. Failure to do so could result in Home Assistant not functioning as expected. Modified `Resources` will be applied immediately without the need to reboot the container. Hardware changes to Proxmox (for example plugin/unplug USB device) requires the container to restart in order for Home Assistant to parse the changes.
