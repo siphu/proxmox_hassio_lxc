@@ -169,7 +169,7 @@ msg "Setting up container OS..."
 lxc-cmd dhclient -4
 lxc-cmd sed -i "/$LANG/ s/\(^# \)//" /etc/locale.gen
 lxc-cmd locale-gen >/dev/null
-lxc-cmd apt-get -y purge openssh-{client,server} >/dev/null
+#lxc-cmd apt-get -y purge openssh-{client,server} >/dev/null
 
 # Update container OS
 msg "Updating container OS..."
