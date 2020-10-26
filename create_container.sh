@@ -51,7 +51,7 @@ TEMP_DIR=$(mktemp -d)
 pushd $TEMP_DIR >/dev/null
 
 # Download setup script
-REPO="https://github.com/whiskerz007/proxmox_hassio_lxc"
+REPO="https://github.com/siphu/proxmox_hassio_lxc"
 wget -qO - ${REPO}/tarball/master | tar -xz --strip-components=1
 
 # Select storage location
@@ -82,7 +82,8 @@ fi
 info "Using '$STORAGE' for storage location."
 
 # Get the next guest VM/LXC ID
-CTID=$(pvesh get /cluster/nextid)
+#CTID=$(pvesh get /cluster/nextid)
+CTID=$1
 info "Container ID is $CTID."
 
 # Download latest Debian LXC template
@@ -206,7 +207,7 @@ msg "Creating Home Assistant config..."
 HASSIO_CONFIG_PATH=/etc/hassio.json
 HASSIO_DOCKER=homeassistant/amd64-hassio-supervisor
 HASSIO_MACHINE=qemux86-64
-HASSIO_DATA_PATH=/usr/share/hassio
+HASSIO_DATA_PATH=/root/hassio
 lxc-cmd bash -c "cat > $HASSIO_CONFIG_PATH <<- EOF
 {
     \"supervisor\": \"${HASSIO_DOCKER}\",
@@ -252,14 +253,14 @@ lxc-cmd wget -qLO /usr/bin/ha ${HA_URL_BASE}/ha
 lxc-cmd chmod a+x /usr/bin/ha
 
 # Setup 'ha' cli prompt
-msg "Configuring 'ha' cli prompt..."
-HA_CLI_PATH=/usr/sbin/hassio-cli
-lxc-cmd wget -qLO $HA_CLI_PATH https://github.com/home-assistant/operating-system/raw/dev/buildroot-external/rootfs-overlay/usr/sbin/hassos-cli
-lxc-cmd sed -i 's,/bin/ash,/bin/bash,g' $HA_CLI_PATH
-lxc-cmd sed -i 's,^\(mesg n.*\)$,# \1,' /root/.profile
-lxc-cmd chmod a+x $HA_CLI_PATH
-lxc-cmd usermod --shell $HA_CLI_PATH root
-lxc-cmd bash -c "echo -e '\ncd $HASSIO_DATA_PATH' >> /root/.bashrc"
+#msg "Configuring 'ha' cli prompt..."
+#HA_CLI_PATH=/usr/sbin/hassio-cli
+#lxc-cmd wget -qLO $HA_CLI_PATH https://github.com/home-assistant/operating-system/raw/dev/buildroot-external/rootfs-overlay/usr/sbin/hassos-cli
+#lxc-cmd sed -i 's,/bin/ash,/bin/bash,g' $HA_CLI_PATH
+#lxc-cmd sed -i 's,^\(mesg n.*\)$,# \1,' /root/.profile
+#lxc-cmd chmod a+x $HA_CLI_PATH
+#lxc-cmd usermod --shell $HA_CLI_PATH root
+#lxc-cmd bash -c "echo -e '\ncd $HASSIO_DATA_PATH' >> /root/.bashrc"
 
 # Cleanup container
 msg "Cleanup..."
