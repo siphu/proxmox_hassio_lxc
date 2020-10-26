@@ -90,8 +90,8 @@ info "Container ID is $CTID."
 msg "Updating LXC template list..."
 pveam update >/dev/null
 msg "Downloading LXC template..."
-OSTYPE=debian
-OSVERSION=${OSTYPE}-10
+OSTYPE=ubuntu
+OSVERSION=${OSTYPE}-20.04
 mapfile -t TEMPLATES < <(pveam available -section system | sed -n "s/.*\($OSVERSION.*\)/\1/p" | sort -t - -k 2 -V)
 TEMPLATE="${TEMPLATES[-1]}"
 pveam download local $TEMPLATE >/dev/null ||
@@ -114,7 +114,7 @@ ROOTFS=${STORAGE}:${DISK_REF-}${DISK}
 
 # Create LXC
 msg "Creating LXC container..."
-DISK_SIZE=4G
+DISK_SIZE=32G
 pvesm alloc $STORAGE $CTID $DISK $DISK_SIZE --format ${DISK_FORMAT:-raw} >/dev/null
 if [ "$STORAGE_TYPE" == "zfspool" ]; then
   warn "Some addons may not work due to ZFS not supporting 'fallocate'."
